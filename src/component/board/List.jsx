@@ -9,7 +9,7 @@ const List = () => {
 
   // effect
   useEffect(() => {
-    req('get', 'list');
+    req('get', 'notes/listall');
 
     // unmount 시 할 일
     return () => {
@@ -29,8 +29,9 @@ const List = () => {
     <div>
       <h1>List</h1>
       <button onClick={() => navigate('/write')}>글쓰기</button>
+      <button onClick={() => navigate('/dashboard')}>메인 화면</button>
       <ul>
-        {data.dtoList.map(b => <li key={b.bno}>{b.title}</li>)}
+        {data && data.map(b => <li key={b.num}>{b.title}</li>)}
       </ul>
     </div>
   );
