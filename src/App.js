@@ -2,15 +2,33 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import NotFound from "./component/common/NotFound";
 import List from "./component/board/List";
 import Write from "./component/board/Write";
+import LoginForm from "./component/member/LoginForm";
+import Dashboard from "./component/common/Dashboard";
+import ProtectdRoute from "./component/common/ProtectdRoute";
+import { AuthProvider } from "./hooks/AuthContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<List />} />
-        <Route path="/write" element={<Write />} />
-        <Route path="/not" element={<NotFound />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/list" element={
+            <ProtectdRoute>
+              <List />
+            </ProtectdRoute>
+          } />
+          <Route path="/write" element={
+            <ProtectdRoute>
+              <Write />
+            </ProtectdRoute>
+          } />
+
+          <Route path="/not" element={<NotFound />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
