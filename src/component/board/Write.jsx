@@ -14,7 +14,7 @@ const Write = () => {
 
   // email을 확실히 set하기 위해서 하는 작업
   useEffect(() => {
-    setBoard(prev => [{...prev, memberEmail : email}]);
+    setBoard(prev => ({...prev, writerEmail:email}));
   }, [email]);
 
   const handleChange = (e) => {
@@ -83,9 +83,9 @@ const Write = () => {
     <div>
       <h1>Write</h1>
       <form onSubmit={handleSubmit}>
-        <label>제목 : <input type='text' name='title' id='title' value={board.title} onChange={handleChange} /></label>
+        <label>제목 : <input type='text' name='title' id='title' value={board.title || ''} onChange={handleChange} /></label>
         <br />
-        <label>내용 : <textarea rows='5' name='content' id='content' value={board.content} onChange={handleChange} /></label>
+        <label>내용 : <textarea rows='5' name='content' id='content' value={board.content || ''} onChange={handleChange} /></label>
         <br />
         <label>작성자 : <input type='text' name='memberEmail' id='memberEmail' value={board.memberEmail} onChange={handleChange} readOnly /></label>
         <br />
