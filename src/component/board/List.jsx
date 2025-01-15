@@ -31,7 +31,7 @@ const List = () => {
       <button onClick={() => navigate('/write')}>글쓰기</button>
       <Link to={"/dashboard"}>메인 화면</Link>
       <ul>
-        {data && data.map(b => <li key={b.num}>{b.title}</li>)}
+        {data && data.map(b => <li key={b.num}><Link to={`/notes/${b.num}`}>{b.title}</Link></li>)}
       </ul>
     </div>
   );
