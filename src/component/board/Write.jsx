@@ -7,8 +7,9 @@ const Write = () => {
   // const [title, setTitle] = useState('');
   // const [content, setContent] = useState('');
   // const [memberEmail, setMemberEmail] = useState('');
-  const {email, token} = useAuth();
+  const {email} = useAuth();
   const [board, setBoard] = useState({title: '', content: '', memberEmail: email});
+  const [uploaded, setUploaded] = useState([]);
   const navigate = useNavigate();
   const {req} = UseAxios();
 
@@ -48,31 +49,36 @@ const Write = () => {
   }
 
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
+    const files = e.target.files;
 
-    if(!file) {
+    if(!files) {
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", file);
+
+    for(let i = 0; i < files.length; i++) {
+      formData.append("file", files[i]);
+    }
   
     try {
-      const headers = {
-        'Authorization':`Bearer ${token}`,
-      }
-      const response = await fetch("http://localhost:8080/api/v1/file/upload", {
-        method: "POST",
-        body: formData,
-        headers
-      });
+      // const headers = {
+      //   'Authorization':`Bearer ${token}`,
+      // }
+      // const response = await fetch("http://localhost:8080/api/v1/file/upload", {
+      //   method: "POST",
+      //   body: formData,
+      //   headers
+      // });
   
-      const result = await response.json();
-      if (result.status === "success") {
-        console.log("File uploaded successfully:", result.data);
-      } else {
-        console.error("Upload failed:", result.message);
-      }
+      const result = await req('post', 'file/upload', formData, {'Content-Type':'miltipart/form-data'});
+      console.log(result);
+      setUploaded(result);      
+      // if (result.status === "success") {
+      //   console.log("File uploaded successfully:", result.data);
+      // } else {
+      //   console.error("Upload failed:", result.message);
+      // }
     } catch (error) {
       console.error("Error during upload:", error);
     }
@@ -89,11 +95,14 @@ const Write = () => {
         <br />
         <label>작성자 : <input type='text' name='memberEmail' id='memberEmail' value={board.memberEmail} onChange={handleChange} readOnly /></label>
         <br />
-        <input type='file' onChange={handleFileUpload} name='file' />
+        <input type='file' onChange={handleFileUpload} name='file' multiple />
         <br />
         <button>등록</button>
         <Link to={"/notes"}>목록</Link>
       </form>
+        <ul>
+          {uploaded.map(u => <li key={u.uuid}><Link to={u.url}>{u.origin}</Link></li>)}
+        </ul>
     </div>
   );
 }
