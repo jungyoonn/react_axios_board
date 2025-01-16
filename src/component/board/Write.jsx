@@ -41,8 +41,10 @@ const Write = () => {
     // console.log({title, content, memberEmail});
     console.log(board);
 
+    // setBoard({...board, attachDtos : uploaded});
+
     // 빈 값에 대한 추가 처리 필요
-    req('post', 'notes', board);
+    req('post', 'notes', {...board, attachDtos : uploaded});
 
     alert("글을 작성했습니다");
     navigate("/notes");
