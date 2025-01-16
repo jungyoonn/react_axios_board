@@ -47,6 +47,13 @@ const View = () => {
       <p>작성일 : </p>
       <p style={{color:"white"}}>{data.regDate}</p>
 
+      <div>
+        <h3>첨부파일 : {data.attachDtos.length}개</h3>
+        <ul>
+          {data.attachDtos.map(a => <li key={a.uuid}><Link to={a.url}>{a.origin}</Link></li>)}
+        </ul>
+      </div>
+
       <Link to={"/notes"}>목록</Link>
       <Link to={`/notes/modify/${num}`}>수정</Link>
       <button onClick={handleDelete}>삭제</button>
