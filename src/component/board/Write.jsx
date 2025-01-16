@@ -58,7 +58,6 @@ const Write = () => {
     }
 
     const formData = new FormData();
-
     for(let i = 0; i < files.length; i++) {
       formData.append("file", files[i]);
     }
@@ -73,9 +72,10 @@ const Write = () => {
       //   headers
       // });
   
-      const result = await req('post', 'file/upload', formData, {'Content-Type':'miltipart/form-data'});
+      const result = await req('post', 'file/upload', formData, {'Content-Type':'multipart/form-data'});
       console.log(result);
-      setUploaded(result);      
+      setUploaded([...uploaded, ...result]); 
+
       // if (result.status === "success") {
       //   console.log("File uploaded successfully:", result.data);
       // } else {
@@ -85,6 +85,7 @@ const Write = () => {
       console.error("Error during upload:", error);
     }
 
+    e.target.value = '';
   };
 
   return (
@@ -103,7 +104,7 @@ const Write = () => {
         <Link to={"/notes"}>목록</Link>
       </form>
         <ul>
-          {uploaded.map(u => <li key={u.uuid}><Link to={u.url}>{u.origin}</Link></li>)}
+          {uploaded.map(u => <li key={u.uuid}><Link to={u.url}>{u.origin}</Link><button data-uuid={u.uuid} onClick={e => setUploaded(uploaded.filter(file => file.uuid !== e.currentTarget.dataset.uuid))}>삭제</button></li>)}
         </ul>
     </div>
   );
